@@ -31,6 +31,8 @@ tile_name = input('Path to tile atlas: ')
 # save files default to new_map
 save_file = input('Path to .json save file: ')  or 'new_map.json'
 image_save = input('Path to .png save file: ') or 'new_map.png'
+atlas_tilesize = int(input('Tile size of tile atlas: '))
+local_tilesize = int(input('Tile size of the level: '))
 image_width = int(input('Image width (# of tiles): ')) * local_tilesize
 image_height = int(input('Image height (# of tiles): ')) * local_tilesize
 image_surface = pygame.Surface((image_width,image_height))
@@ -43,9 +45,11 @@ current_img = tiles[current_index]
 toggle_obstacle = False
 
 # get the save data from .json file
-with open(save_file) as json_file:
-    level = json.load(json_file)
-
+with open(save_file, 'a+') as json_file:
+    try:
+        level = json.load(json_file)
+    except json.JSONDecodeError:
+        pass
 # move the anchor position for scrolling (if the image res is larger than the window res)
 def move_anchor(x, y):
     keys = pygame.key.get_pressed()
@@ -132,7 +136,14 @@ while True:
             display_surface.blit(img,(x,y))
     
     mx, my = pygame.mouse.get_pos()
-    display_surface.blit(current_img, (mx-current_img.get_width()/2,my-current_img.get_width()/2))
+    display_surface.blit(current_img, (mx-current_img.get_width()/2,my-current_img.get_height()/2))
+    pygame.draw.rect(display_surface,
+                    'red',
+                    (mx-current_img.get_width()/2,
+                    my-current_img.get_height()/2,
+                    current_img.get_width(),
+                    current_img.get_height()),
+                    3) if toggle_obstacle else None
 
     # display the atlas on the right
     display_surface.blit(tile_img, (1000,0))
