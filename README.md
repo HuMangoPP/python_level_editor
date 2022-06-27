@@ -1,4 +1,4 @@
-# python_level_editor
+# Tiled Pixel Art Level Editor
 
 ## A tile-based pixel art level editor made using python and pygame
 
@@ -8,7 +8,7 @@ Upon exit, this program will save a .json file containing tile information (inde
 
 The program will also save a .png file based on the inputted size containing the created level.
 
-This program **does not** support multiple layers.
+This program **does not** support multiple layers. This feature may be coming soon.
 
 ### Instructions:
 
