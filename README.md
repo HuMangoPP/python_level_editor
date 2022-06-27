@@ -25,6 +25,7 @@ This program **does not** support multiple layers.
 
 1. Use WASD keys to move the anchor for the canvas in cases where the image is larger than the pygame window
 2. Use the SPACE key to toggle the collision state on or off (a red outline on the tile will indicate this state)
-3. Use the mouse wheel to switch between tiles in the atlas
-4. If there is no .json file, the program will create one
-5. If no .json file or no .png file is specified, the program will create new_map.json and new_map.png in root directory
+3. Use the left mouse button to place a tile and the right mouse button to add a tile
+4. Use the mouse wheel to switch between tiles in the atlas
+5. If there is no .json file, the program will create one
+6. If no .json file or no .png file is specified, the program will create new_map.json and new_map.png in root directory
