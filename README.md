@@ -17,7 +17,7 @@ This program **does not** support multiple layers. This feature may be coming so
 3. Relocated level_editor.py to the game directory
 4. Open the terminal and use ```python level_editor.py``` or ```python3 level_editor.py``` to run the file
 5. Follow instructions to set the path for the tile atlas, the path for the .json file to be loaded from and saved to, and the path of the .png file to be saved to
-6. Input the tile size of the atlas and the tile size of the desired outcome .png file
+6. Input the tile size of the atlas and the tile size of the game window and .png out file
 7. Input the dimensions of the level based on the number of tiles (width and height)
 8. Begin designing!
 
