@@ -29,3 +29,4 @@ This program **does not** support multiple layers.
 4. Use the mouse wheel to switch between tiles in the atlas
 5. If there is no .json file, the program will create one
 6. If no .json file or no .png file is specified, the program will create new_map.json and new_map.png in root directory
+7. This program is **not** exclusive to python. Any graphics library supporting .png files and languages supporting .json files can easily use this editor
