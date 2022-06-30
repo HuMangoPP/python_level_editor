@@ -21,13 +21,23 @@ def load_tile_atlas(tile_atlas):
             atlas[x+width*y] = tile
     return atlas
 
+def display_flags(display,flags,toggle_flags,font):
+    for i in range(len(flags)):
+        text = font.render(flags[i],False,'white')
+        if toggle_flags[i]:
+            text = font.render(flags[i],False,'red')
+        text_box = text.get_rect(topright=(local_width,50+i*20)).inflate(20,20)
+        display.blit(text,text_box)
+
 pygame.init()
 pygame.display.set_caption("level editor")
+font = pygame.font.Font('./font/joystix.ttf',20)
 display_surface = pygame.display.set_mode((local_width,local_height))
 clock = pygame.time.Clock()
 
 # take inputs
-tile_name = input('Path to tile atlas: ')
+# atlas defaults to atlas.png
+tile_name = input('Path to tile atlas: ') or 'atlas.png'
 # save files default to new_map
 save_file = input('Path to .json save file: ')  or 'new_map.json'
 image_save = input('Path to .png save file: ') or 'new_map.png'
@@ -42,14 +52,15 @@ tile_img = pygame.image.load(tile_name)
 tiles = load_tile_atlas(tile_img)
 current_index = 0
 current_img = tiles[current_index]
-toggle_obstacle = False
+flags = []
+toggle_flags = []
 
 # get the save data from .json file
-with open(save_file, 'a+') as json_file:
-    try:
+try:
+    with open(save_file, 'r') as json_file:
         level = json.load(json_file)
-    except json.JSONDecodeError:
-        pass
+except:
+    pass
 # move the anchor position for scrolling (if the image res is larger than the window res)
 def move_anchor(x, y):
     keys = pygame.key.get_pressed()
@@ -89,8 +100,16 @@ while True:
                 sys.exit()
             if event.key==pygame.K_DELETE:
                 level.clear()
-            if event.key==pygame.K_SPACE:
-                toggle_obstacle = not toggle_obstacle
+            if event.key==pygame.K_f:
+                # add a new flag
+                new_flag = input('New Flag: ')
+                flags.append(new_flag)
+                toggle_flags.append(False)
+        
+            if event.key>=pygame.K_0 and event.key<=pygame.K_9:
+                if len(flags)>event.key-pygame.K_0:
+                    toggle_flags[event.key-pygame.K_0] = not toggle_flags[event.key-pygame.K_0]
+
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 4:
                 current_index-=1
@@ -114,9 +133,19 @@ while True:
                 col_tiles = {}
             if pygame.mouse.get_pressed(3)[0]:
                 # saves the image index based on the atlas and if the tile is an obstacle
-                col_tiles[str(col)] = [current_index, toggle_obstacle]
+
+                active_flags = {}
+                for i in range(len(toggle_flags)):
+                    if toggle_flags[i]:
+                        active_flags[flags[i]] = True
+                col_tiles[str(col)] = {
+                    'tile_id': current_index,
+                    'flags': active_flags
+                }
             elif pygame.mouse.get_pressed(3)[2] and str(col) in col_tiles:
                 del col_tiles[str(col)]
+                if len(level[str(row)])==0:
+                    del level[str(row)]
             
             level[str(row)] = col_tiles
 
@@ -127,7 +156,7 @@ while True:
     # draw tile information to image_surface but no debug information
     for row in level:
         for col in level[str(row)]:
-            img = tiles[level[str(row)][str(col)][0]]
+            img = tiles[level[str(row)][str(col)]['tile_id']]
             x = int(col)*local_tilesize
             y = int(row)*local_tilesize
             image_surface.blit(img,(x,y))
@@ -137,13 +166,14 @@ while True:
     
     mx, my = pygame.mouse.get_pos()
     display_surface.blit(current_img, (mx-current_img.get_width()/2,my-current_img.get_height()/2))
+    display_flags(display_surface,flags,toggle_flags,font)
     pygame.draw.rect(display_surface,
                     'red',
                     (mx-current_img.get_width()/2,
                     my-current_img.get_height()/2,
                     current_img.get_width(),
                     current_img.get_height()),
-                    3) if toggle_obstacle else None
+                    3) 
 
     # display the atlas on the right
     display_surface.blit(tile_img, (1000,0))
