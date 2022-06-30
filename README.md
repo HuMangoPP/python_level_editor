@@ -4,7 +4,7 @@
 
 This program uses a tile atlas and allows you to place tiles according to the tile atlas.
 
-Upon exit, this program will save a .json file containing tile information (index within tile atlas and boolean value storing the collision state of the tile).
+Upon exit, this program will save a .json file containing tile information. The tile_id key specifies the index of the tile within the tile atlas. The flags key specifies the active flags of the tile.
 
 The program will also save a .png file based on the inputted size containing the created level.
 
@@ -24,9 +24,10 @@ This program **does not** support multiple layers. This feature may be coming so
 ### Notes:
 
 1. Use WASD keys to move the anchor for the canvas in cases where the image is larger than the pygame window
-2. Use the SPACE key to toggle the collision state on or off (a red outline on the tile will indicate this state)
-3. Use the left mouse button to place a tile and the right mouse button to remove a tile
-4. Use the mouse wheel to switch between tiles in the atlas
-5. If there is no .json file, the program will create one
-6. If no .json file or no .png file is specified, the program will create new_map.json and new_map.png in root directory
-7. This program is **not** exclusive to python. Any graphics library supporting .png files and languages supporting .json files can easily use this editor
+2. Use the F key to create up to 10 custom flags for tiles
+3. Use the numeric keys to toggle the active flags
+4. Use the left mouse button to place a tile and the right mouse button to remove a tile
+5. Use the mouse wheel to switch between tiles in the atlas
+6. If there is no .json file, the program will create one
+7. If no .json file or no .png file is specified, the program will create new_map.json and new_map.png in root directory. If no atlas is specified, then the default atlas.png will be used.
+8. This program is **not** exclusive to python. Any graphics library supporting .png files and languages supporting .json files can easily use this editor
